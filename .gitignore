@@ -1,7 +1,19 @@
-logs/*
-!.gitkeep
-node_modules/
-tmp
-.idea
-.DS_Store
-bower_components/
+#ignore unity-generated folders
+Temp/
+Library/
+
+#ignore VS generated files and folders
+obj/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.users
+*.suo
+*.sln
+*.sdf
+*.opensdf
+
+#extra folder
+Extra/
+
+Debug/
+Win32/
