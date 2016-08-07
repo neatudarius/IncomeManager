@@ -6,7 +6,7 @@ Library/
 obj/
 *.vcxproj
 *.vcxproj.filters
-*.vcxproj.users
+*.vcxproj.user
 *.suo
 *.sln
 *.sdf

@@ -9,6 +9,7 @@
 #ifndef UI_INCOMEMANAGER_H
 #define UI_INCOMEMANAGER_H
 
+#include <QObject>
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
@@ -27,30 +28,26 @@ QT_BEGIN_NAMESPACE
 class Ui_IncomeManagerClass
 {
 public:
+    QMainWindow *incomeManagerClass;
     QWidget *centralWidget;
     QTableWidget *tableWidget;
     QPushButton *addIncomePushButton;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
-    QMainWindow *incomeManagerClass;
+    QTabWidget *tabWidget;
 
-    void setupUi(QMainWindow *IncomeManagerClass)
-    {
+    void setupUi(QMainWindow *IncomeManagerClass) {
         this->incomeManagerClass = IncomeManagerClass;
         createCentralWidget();
         createTableWidget();
         createMainToolBar();
         createStatusBar();
         createAddIcomeButton();
-       
-        retranslateUi(IncomeManagerClass);
-
+      
         connectSignalToSlots();
         
-
         QMetaObject::connectSlotsByName(IncomeManagerClass);
-    } // setupUi
-
+    }
 
     void createCentralWidget() {
         if (incomeManagerClass->objectName().isEmpty())
@@ -59,23 +56,31 @@ public:
         centralWidget = new QWidget(incomeManagerClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         incomeManagerClass->setCentralWidget(centralWidget);
+        incomeManagerClass->setWindowTitle(QApplication::translate("IncomeManagerClass", "IncomeManager", 0));
+
     }
+
+    void createTabWidget() {
+        tabWidget = new QTabWidget;
+        tabWidget->addTab(tableWidget, QObject::tr("PWP1"));
+        tabWidget->addTab(tableWidget, QObject::tr("PWP2"));
+        tabWidget->addTab(tableWidget, QObject::tr("PWP2"));
+        tabWidget->setGeometry(QRect(70, 50, 1200, 600));
+    }
+
     void createTableWidget() {
-        tableWidget = new QTableWidget(centralWidget);
-        if (tableWidget->columnCount() < 5)
-            tableWidget->setColumnCount(5);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
-        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
-        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(2, __qtablewidgetitem2);
-        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(3, __qtablewidgetitem3);
-        QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(4, __qtablewidgetitem4);
+        QVector<QString> colName({
+            "ID", "Name", "Value", "Type", "Date", "Obs"
+        });
+        tableWidget = new QTableWidget( centralWidget );
+        tableWidget->setColumnCount(colName.size());
+        for (int i = 0; i < colName.size(); ++i) {
+            QTableWidgetItem *qtablewidgetitem = new QTableWidgetItem();
+            qtablewidgetitem->setText(QApplication::translate("IncomeManagerClass", colName[i].toLatin1().data()));
+            tableWidget->setHorizontalHeaderItem(i, qtablewidgetitem);
+        }
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
-        tableWidget->setGeometry(QRect(70, 50, 1021, 241));
+        tableWidget->setGeometry(QRect(70, 50, 1200, 600));
     }
 
     void createMainToolBar() {
@@ -89,31 +94,18 @@ public:
         statusBar->setObjectName(QStringLiteral("statusBar"));
         incomeManagerClass->setStatusBar(statusBar);
     }
+
     void createAddIcomeButton() {
         addIncomePushButton = new QPushButton(centralWidget);
         addIncomePushButton->setObjectName(QStringLiteral("addIncomePushButton"));
         addIncomePushButton->setGeometry(QRect(70, 10, 75, 23));
+        addIncomePushButton->setText(QApplication::translate("IncomeManagerClass", "Add income", 0));
     }
 
     void connectSignalToSlots() {
         QObject::connect(addIncomePushButton, SIGNAL(clicked()), incomeManagerClass, SLOT(addIncome()));
+        QObject::connect(tableWidget, SIGNAL(cellChanged(int, int)), incomeManagerClass, SLOT(cellChanged(int, int)));
     }
-    void retranslateUi(QMainWindow *IncomeManagerClass)
-    {
-        IncomeManagerClass->setWindowTitle(QApplication::translate("IncomeManagerClass", "IncomeManager", 0));
-        QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("IncomeManagerClass", "ID", 0));
-        QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("IncomeManagerClass", "Event", 0));
-        QTableWidgetItem *___qtablewidgetitem2 = tableWidget->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QApplication::translate("IncomeManagerClass", "Value", 0));
-        QTableWidgetItem *___qtablewidgetitem3 = tableWidget->horizontalHeaderItem(3);
-        ___qtablewidgetitem3->setText(QApplication::translate("IncomeManagerClass", "Type", 0));
-        QTableWidgetItem *___qtablewidgetitem4 = tableWidget->horizontalHeaderItem(4);
-        ___qtablewidgetitem4->setText(QApplication::translate("IncomeManagerClass", "Obs", 0));
-        addIncomePushButton->setText(QApplication::translate("IncomeManagerClass", "Add income", 0));
-    } // retranslateUi
-
 };
 
 namespace Ui {

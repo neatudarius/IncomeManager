@@ -3,6 +3,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_incomemanager.h"
+#include <QMessageBox>
 
 class IncomeManager : public QMainWindow
 {
@@ -14,7 +15,7 @@ class IncomeManager : public QMainWindow
 
     public slots:
         void addIncome();
-
+        void cellChanged(int row, int column);
     private:
         Ui::IncomeManagerClass ui;
 };
