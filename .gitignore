@@ -1,7 +1,3 @@
-#ignore unity-generated folders
-Temp/
-Library/
-
 #ignore VS generated files and folders
 obj/
 *.vcxproj
@@ -12,8 +8,9 @@ obj/
 *.sdf
 *.opensdf
 
-#extra folder
+#extra folders
 Extra/
-
 Debug/
 Win32/
+GeneratedFiles/Debug/
+GeneratedFiles/Release/
