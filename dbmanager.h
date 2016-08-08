@@ -7,7 +7,11 @@ class DbManager {
     public:
         DbManager();
         ~DbManager();
-        void initTable(QTableWidget *tableWidget);
+        void initTable(QTableWidget *defaultTableWidget);
+
+    public slots:
+        static void typeSelected(const QString& type);
+
     private:
         QVector<Event> events;
 

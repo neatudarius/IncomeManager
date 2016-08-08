@@ -14,7 +14,7 @@
    <string>IncomeManager</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="defaultTableWidget">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -62,54 +62,28 @@
      <string>Add income</string>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>220</y>
-      <width>471</width>
-      <height>181</height>
+      <x>310</x>
+      <y>10</y>
+      <width>113</width>
+      <height>20</height>
      </rect>
     </property>
-    <property name="currentIndex">
-     <number>1</number>
+   </widget>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>10</y>
+      <width>82</width>
+      <height>17</height>
+     </rect>
     </property>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Tab 1</string>
-     </attribute>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>60</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Tab 2</string>
-     </attribute>
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>70</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-    </widget>
+    <property name="text">
+     <string>RadioButton</string>
+    </property>
    </widget>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

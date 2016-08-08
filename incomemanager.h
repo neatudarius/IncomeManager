@@ -15,6 +15,7 @@ class IncomeManager : public QMainWindow {
     public slots:
         void tableAddIncome();
         void tableCellChanged(int row, int column);
+        void typeSelected(QString& type);
 
     private:
         Ui::IncomeManagerClass ui;

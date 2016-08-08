@@ -2,6 +2,24 @@
 #include "event.h"
 
 int Event::ID_COUNTER = 0;
+QStringList Event::TYPES = QStringList({
+    "INCOME",
+    "SALARY",
+    "SCHOLARSHIP",
+    "COACHING",
+    "TEACHING",
+    "SOFTWARE_SELLING",
+    "SELLING",
+    "EXPENSE",
+    "PAYMENT",
+    "TRANSACTION",
+    "SHOPPING",
+    "TRIP",
+    "HOLIDAY",
+    "RENT",
+    "FOOD",
+    "TRANSPORT"
+});
 
 Event::Event() {
     

@@ -10,7 +10,9 @@
 #define UI_INCOMEMANAGER_H
 
 #include <QObject>
+#include <QDoubleValidator>
 #include <QtCore/QVariant>
+#include <QComboBox>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
@@ -22,27 +24,42 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 #include "../../../../../Qt/5.7/msvc2013/include/QtCore/qobjectdefs.h"
+#include <QtWidgets/QRadioButton>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QDateTimeEdit>
+#include <QtWidgets/QHBoxLayout>
+#include <event.h>
+#include <dbmanager.h>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_IncomeManagerClass {
 public:
     QMainWindow *incomeManagerClass;
-    QWidget *centralWidget;
-    QTableWidget *tableWidget;
+    QWidget *centralWidget, *defaultTabWidget;
+    QTableWidget *defaultTableWidget, *tableWidget;
     QPushButton *addIncomePushButton;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QTabWidget *tabWidget;
+    QLineEdit *nameLineEdit, *notesLineEdit, *amountLineEdit;
+    QComboBox *typeComboBox;
+    QRadioButton *radioButton;
+    QDateTimeEdit *dateTimeEditWidget;
 
     void setupUi(QMainWindow *IncomeManagerClass) {
         this->incomeManagerClass = IncomeManagerClass;
+       
         createCentralWidget();
-        createTableWidget();
-        createMainToolBar();
-        createStatusBar();
-        createAddIcomeButton();
-      
+//        createMainToolBar(centralWidget);
+//        createStatusBar(centralWidget);
+
+        createDefaultTab(centralWidget);
+        tableWidget = new QTableWidget(centralWidget);
+        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+
+        createTabWidget(centralWidget);
+
         connectSignalToSlots();
         
         QMetaObject::connectSlotsByName(IncomeManagerClass);
@@ -56,62 +73,106 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         incomeManagerClass->setCentralWidget(centralWidget);
         incomeManagerClass->setWindowTitle(QApplication::translate("IncomeManagerClass", "IncomeManager", 0));
-
     }
 
-    void createTabWidget() {
-        tabWidget = new QTabWidget;
-        tabWidget->addTab(tableWidget, QObject::tr("PWP1"));
-        tabWidget->addTab(tableWidget, QObject::tr("PWP2"));
-        tabWidget->addTab(tableWidget, QObject::tr("PWP2"));
-        tabWidget->setGeometry(QRect(70, 50, 1200, 600));
+    void createTabWidget(QWidget *parent) {
+        tabWidget = new QTabWidget(parent);
+        tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        tabWidget->addTab(defaultTabWidget, QObject::tr("Default panel"));
+        tabWidget->addTab(tableWidget, QObject::tr("PWP"));
+        tabWidget->setGeometry(QRect(10, 10, 1300, 600));
     }
 
-    void createTableWidget() {
+    void createDefaultTab(QWidget *parent) {
+        defaultTabWidget = new QWidget(parent);
+        defaultTabWidget->setObjectName(QStringLiteral("defaultTabWidget"));
+        defaultTabWidget->setGeometry( QRect(10, 20,1400, 800));
+        createAddEventForm(defaultTabWidget);
+        createTableWidget(defaultTabWidget);
+    }
+
+
+
+    void createAddEventForm(QWidget *parent) {
+        nameLineEdit = new QLineEdit(parent);
+        nameLineEdit->setObjectName(QStringLiteral("nameLineEdit"));
+        nameLineEdit->setGeometry(QRect(50, 10, 200, 20));
+        nameLineEdit->insert("Name");
+        nameLineEdit->setClearButtonEnabled(true);
+
+        amountLineEdit = new QLineEdit(parent);
+        amountLineEdit->setObjectName(QStringLiteral("amountLineEdit"));
+        amountLineEdit->setGeometry(QRect(260, 10, 50, 20));
+        amountLineEdit->insert("13");
+        amountLineEdit->setClearButtonEnabled(true);
+        amountLineEdit->setValidator(new QDoubleValidator());
+
+
+        typeComboBox = new QComboBox(parent);
+        typeComboBox->setObjectName(QStringLiteral("typeComboBox"));
+        typeComboBox->setGeometry(QRect(320, 10, 200, 20));
+        typeComboBox->addItems(Event::TYPES);
+        typeComboBox->setEditable(true);
+
+        dateTimeEditWidget = new QDateTimeEdit(parent);
+        dateTimeEditWidget->setObjectName(QStringLiteral("dateTimeEditWidget"));
+        dateTimeEditWidget->setGeometry(QRect(540, 10, 120, 20));
+        dateTimeEditWidget->setDateTime(QDateTime::currentDateTime());
+
+
+        notesLineEdit = new QLineEdit(parent);
+        notesLineEdit->setObjectName(QStringLiteral("notesLineEdit"));
+        notesLineEdit->setGeometry(QRect(700, 10, 120, 20));
+        notesLineEdit->insert("notesLineEdit");
+        notesLineEdit->setClearButtonEnabled(true);
+                
+        addIncomePushButton = new QPushButton(parent);
+        addIncomePushButton->setObjectName(QStringLiteral("addIncomePushButton"));
+        addIncomePushButton->setGeometry(QRect(900, 10, 75, 23));
+        addIncomePushButton->setText(QApplication::translate("IncomeManagerClass", "Add event", 0));
+    }
+
+    void createTableWidget(QWidget *parent) {
         QVector<QString> colName({
             "ID", "Name", "Amount", "Type", "Date", "Notes"
         });
         QVector<int> colWidth({
-            50, 350, 100, 100, 100, 300
+            50, 350, 100, 100, 100, 500
         });
         QVector<Qt::Alignment> colAligment({
             Qt::AlignHCenter, Qt::AlignLeft, Qt::AlignHCenter, Qt::AlignHCenter, Qt::AlignHCenter, Qt::AlignLeft
         });
-        tableWidget = new QTableWidget( centralWidget );
-        tableWidget->setColumnCount(colName.size());
+        defaultTableWidget = new QTableWidget( parent );
+
+        defaultTableWidget->setColumnCount(colName.size());
+
         for (int i = 0; i < colName.size(); ++i) {
             QTableWidgetItem *item = new QTableWidgetItem();
             item->setText(QApplication::translate("IncomeManagerClass", colName[i].toLatin1().data()));
             item->setTextAlignment(colAligment[i]);
-            tableWidget->setHorizontalHeaderItem(i, item);
-            tableWidget->setColumnWidth(i, colWidth[i]);
+            defaultTableWidget->setHorizontalHeaderItem(i, item);
+            defaultTableWidget->setColumnWidth(i, colWidth[i]);
         }
-        tableWidget->setObjectName(QStringLiteral("tableWidget"));
-        tableWidget->setGeometry(QRect(70, 50, 1000, 600));
+        defaultTableWidget->setObjectName(QStringLiteral("defaultTableWidget"));
+        defaultTableWidget->setGeometry(QRect(50,50, 1200, 600));
     }
 
-    void createMainToolBar() {
-        mainToolBar = new QToolBar(incomeManagerClass);
+    void createMainToolBar(QWidget *parent) {
+        mainToolBar = new QToolBar(parent);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         incomeManagerClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
     }
 
-    void createStatusBar() {
-        statusBar = new QStatusBar(incomeManagerClass);
+    void createStatusBar(QWidget *parent) {
+        statusBar = new QStatusBar(parent);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         incomeManagerClass->setStatusBar(statusBar);
     }
 
-    void createAddIcomeButton() {
-        addIncomePushButton = new QPushButton(centralWidget);
-        addIncomePushButton->setObjectName(QStringLiteral("addIncomePushButton"));
-        addIncomePushButton->setGeometry(QRect(70, 10, 75, 23));
-        addIncomePushButton->setText(QApplication::translate("IncomeManagerClass", "Add income", 0));
-    }
-
     void connectSignalToSlots() {
         QObject::connect(addIncomePushButton, SIGNAL(clicked()), incomeManagerClass, SLOT(tableAddIncome()));
-        QObject::connect(tableWidget, SIGNAL(cellChanged(int, int)), incomeManagerClass, SLOT(tableCellChanged(int, int)));
+        QObject::connect(defaultTableWidget, SIGNAL(cellChanged(int, int)), incomeManagerClass, SLOT(tableCellChanged(int, int)));
+        QObject::connect(typeComboBox, SIGNAL(editTextChanged(QString)), incomeManagerClass, SLOT(typeSelected(QString)));
     }
 };
 
