@@ -25,8 +25,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_IncomeManagerClass
-{
+class Ui_IncomeManagerClass {
 public:
     QMainWindow *incomeManagerClass;
     QWidget *centralWidget;
@@ -70,17 +69,25 @@ public:
 
     void createTableWidget() {
         QVector<QString> colName({
-            "ID", "Name", "Value", "Type", "Date", "Obs"
+            "ID", "Name", "Amount", "Type", "Date", "Notes"
+        });
+        QVector<int> colWidth({
+            50, 350, 100, 100, 100, 300
+        });
+        QVector<Qt::Alignment> colAligment({
+            Qt::AlignHCenter, Qt::AlignLeft, Qt::AlignHCenter, Qt::AlignHCenter, Qt::AlignHCenter, Qt::AlignLeft
         });
         tableWidget = new QTableWidget( centralWidget );
         tableWidget->setColumnCount(colName.size());
         for (int i = 0; i < colName.size(); ++i) {
-            QTableWidgetItem *qtablewidgetitem = new QTableWidgetItem();
-            qtablewidgetitem->setText(QApplication::translate("IncomeManagerClass", colName[i].toLatin1().data()));
-            tableWidget->setHorizontalHeaderItem(i, qtablewidgetitem);
+            QTableWidgetItem *item = new QTableWidgetItem();
+            item->setText(QApplication::translate("IncomeManagerClass", colName[i].toLatin1().data()));
+            item->setTextAlignment(colAligment[i]);
+            tableWidget->setHorizontalHeaderItem(i, item);
+            tableWidget->setColumnWidth(i, colWidth[i]);
         }
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
-        tableWidget->setGeometry(QRect(70, 50, 1200, 600));
+        tableWidget->setGeometry(QRect(70, 50, 1000, 600));
     }
 
     void createMainToolBar() {
@@ -103,14 +110,14 @@ public:
     }
 
     void connectSignalToSlots() {
-        QObject::connect(addIncomePushButton, SIGNAL(clicked()), incomeManagerClass, SLOT(addIncome()));
-        QObject::connect(tableWidget, SIGNAL(cellChanged(int, int)), incomeManagerClass, SLOT(cellChanged(int, int)));
+        QObject::connect(addIncomePushButton, SIGNAL(clicked()), incomeManagerClass, SLOT(tableAddIncome()));
+        QObject::connect(tableWidget, SIGNAL(cellChanged(int, int)), incomeManagerClass, SLOT(tableCellChanged(int, int)));
     }
 };
 
 namespace Ui {
     class IncomeManagerClass: public Ui_IncomeManagerClass {};
-} // namespace Ui
+}
 
 QT_END_NAMESPACE
 

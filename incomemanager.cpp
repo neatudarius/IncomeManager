@@ -1,25 +1,24 @@
 #include "incomemanager.h"
 
 IncomeManager::IncomeManager(QWidget *parent)
-    : QMainWindow(parent)
-{
+    : QMainWindow(parent) {
     ui.setupUi(this);
-//    QMainWindow::showFullScreen();
+    dbManager.initTable(ui.tableWidget);
 }
 
-IncomeManager::~IncomeManager()
-{
-
+IncomeManager::~IncomeManager(){
 }
 
-void IncomeManager::addIncome() {
+void IncomeManager::tableAddIncome() {
     ui.tableWidget->insertRow(0);
-    ui.tableWidget->resizeColumnsToContents();
+//    ui.tableWidget->resizeColumnsToContents();
 }
 
-void IncomeManager::cellChanged(int row, int column) {
-    QMessageBox msgBox;
-    msgBox.setText("The document has been modified at" + row);
-    msgBox.exec();
+void IncomeManager::tableCellChanged(int row, int column) {
+    QString text = ui.tableWidget->item(row, column)->text();
+
+//    QMessageBox msgBox;
+//    msgBox.setText(QString::number(row) + QString::number(column) + text);
+//    msgBox.exec();
 }
 

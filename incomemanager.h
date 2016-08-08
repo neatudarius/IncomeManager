@@ -1,12 +1,11 @@
-#ifndef INCOMEMANAGER_H
-#define INCOMEMANAGER_H
+#pragma once
 
 #include <QtWidgets/QMainWindow>
 #include "ui_incomemanager.h"
 #include <QMessageBox>
+#include "dbmanager.h"
 
-class IncomeManager : public QMainWindow
-{
+class IncomeManager : public QMainWindow {
     Q_OBJECT
 
     public:
@@ -14,10 +13,10 @@ class IncomeManager : public QMainWindow
         ~IncomeManager();
 
     public slots:
-        void addIncome();
-        void cellChanged(int row, int column);
+        void tableAddIncome();
+        void tableCellChanged(int row, int column);
+
     private:
         Ui::IncomeManagerClass ui;
+        DbManager dbManager;
 };
-
-#endif // INCOMEMANAGER_H
