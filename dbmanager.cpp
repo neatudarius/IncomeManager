@@ -1,6 +1,8 @@
 #include "dbmanager.h"
 #include <QMessageBox>
-
+#include "alertemiter.h"
+#include <QPushButton>
+#include <QHBoxLayout>
 
 DbManager::DbManager() {
     events.push_back( Event("Buy clothes", "SHOPPING", -134.01, QDateTime::currentDateTime(), ""));
@@ -11,42 +13,59 @@ DbManager::DbManager() {
 DbManager::~DbManager() {
 }
 
-void DbManager::initTable(QTableWidget* defaultTableWidget) {
-    defaultTableWidget->setRowCount(events.size());
+void DbManager::addEvent(const Event& e) {
+    for (auto event : events) {
+        if (event == e) {
+            AlertEmiter::emitMessageBox("Event already exists!");
+            return;
+        }
+    }
+    events.push_back(e);
+}
+
+QVector<Event> DbManager::getEvents() const {
+    return  events;
+}
+
+int DbManager::getEventsCount() const {
+    return events.size();
+}
+
+
+void DbManager::initTable(QTableWidget* table) const {
+    table->setRowCount(events.size());
 
     QTableWidgetItem *item = NULL;
     for (int i = 0; i < events.size(); ++i) {
-
         item = new QTableWidgetItem;
         item->setFlags(Qt::ItemIsEnabled);
         item->setData(0, events[i].id);
-        defaultTableWidget->setItem(i, 0, item);
+        table->setItem(i, 0, item);
 
         item = new QTableWidgetItem;
         item->setFlags(Qt::ItemIsEnabled);
         item->setData(0, events[i].name);
-        defaultTableWidget->setItem(i, 1, item);
+        table->setItem(i, 1, item);
 
         item = new QTableWidgetItem;
         item->setFlags(Qt::ItemIsEnabled);
         item->setData(0, events[i].amount);
-        defaultTableWidget->setItem(i, 2, item);
+        table->setItem(i, 2, item);
 
         item = new QTableWidgetItem;
         item->setFlags(Qt::ItemIsEnabled);
         item->setData(0, events[i].type);
-        defaultTableWidget->setItem(i, 3, item);
+        table->setItem(i, 3, item);
 
         item = new QTableWidgetItem;
         item->setFlags(Qt::ItemIsEnabled);
         item->setData(0, events[i].date);
-        defaultTableWidget->setItem(i, 4, item);
+        table->setItem(i, 4, item);
 
         item = new QTableWidgetItem;
         item->setFlags(Qt::ItemIsEnabled);
         item->setData(0, events[i].notes);
-        defaultTableWidget->setItem(i, 5, item);
-        
+        table->setItem(i, 5, item);
     }
 }
 

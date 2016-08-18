@@ -13,7 +13,7 @@ class IncomeManager : public QMainWindow {
         ~IncomeManager();
 
     public slots:
-        void tableAddIncome();
+        void addEvent();
         void tableCellChanged(int row, int column);
         void typeSelected(QString& type);
 

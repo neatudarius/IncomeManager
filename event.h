@@ -1,7 +1,7 @@
 #pragma once
-#include "eventtype.h"
 #include <QDateTime>
 #include <QStringList>
+#include <QTableWidget>
 
 struct Event {
         static int ID_COUNTER;
@@ -10,6 +10,7 @@ struct Event {
         Event();
         Event(QString _name, QString _type, double _amount, QDateTime _date, QString _notes);
         ~Event();
+        bool operator==(const Event& e);
 
         int id;
         QString name;
@@ -17,5 +18,8 @@ struct Event {
         double amount;
         QDateTime date;
         QString notes;
+
+        QTableWidgetItem *idWidget, *nameWidget, *typeWidget, *amountWidget, *dateWidget, *notesWidget;
+        QWidget *actionsWidget;
 };
 

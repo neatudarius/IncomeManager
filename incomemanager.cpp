@@ -1,4 +1,5 @@
 #include "incomemanager.h"
+#include "alertemiter.h"
 
 IncomeManager::IncomeManager(QWidget *parent)
     : QMainWindow(parent) {
@@ -9,22 +10,36 @@ IncomeManager::IncomeManager(QWidget *parent)
 IncomeManager::~IncomeManager(){
 }
 
-void IncomeManager::tableAddIncome() {
-    ui.defaultTableWidget->insertRow(0);
-//    ui.defaultTableWidget->resizeColumnsToContents();
+void IncomeManager::addEvent() {
+    if (!ui.nameLineEdit->text().length (  )) {
+        AlertEmiter::emitMessageBox("Name is missing");
+        return;
+    }
+
+    if (!ui.amountLineEdit->text().length ( )) {
+        AlertEmiter::emitMessageBox("Amount is missing");
+        return;
+    }
+    if (!ui.typeComboBox->currentText().length ( )) {
+        AlertEmiter::emitMessageBox("Type is missing");
+        return;
+    }
+
+    QString name = ui.nameLineEdit->text();
+    double amount = ui.amountLineEdit->text().toDouble();
+    QString type = ui.typeComboBox->currentText();
+    QDateTime date = ui.dateTimeEditWidget->dateTime();
+    QString notes = ui.notesLineEdit->text();
+
+    dbManager.addEvent(Event(name, type, amount, date, notes));
+    ui.defaultTableWidget->setRowCount ( dbManager.getEventsCount() );
+    dbManager.initTable(ui.defaultTableWidget);
 }
 
 void IncomeManager::tableCellChanged(int row, int column) {
     QString text = ui.defaultTableWidget->item(row, column)->text();
-
-//    QMessageBox msgBox;
-//    msgBox.setText(QString::number(row) + QString::number(column) + text);
-//    msgBox.exec();
 }
 
 void IncomeManager::typeSelected(QString& type) {
-        QMessageBox msgBox;
-        msgBox.setText("text");
-        msgBox.exec();
     emit DbManager::typeSelected(type);
 }
