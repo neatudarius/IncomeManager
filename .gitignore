@@ -4,6 +4,7 @@ obj/
 *.vcxproj.filters
 *.vcxproj.user
 IncomeManager.vcxproj.user
+IncomeManager.vcxproj.user
 *.suo
 *.sln
 *.sdf
