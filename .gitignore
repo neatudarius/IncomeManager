@@ -4,7 +4,8 @@ obj/
 *.vcxproj.filters
 *.vcxproj.user
 IncomeManager.vcxproj.user
-IncomeManager.vcxproj.user
+IncomeManager.aps
+IncomeManager.sln.DotSettings.user
 *.suo
 *.sln
 *.sdf
@@ -13,6 +14,7 @@ IncomeManager.vcxproj.user
 #extra folders
 Extra/
 Debug/
+Release/
 Win32/
 Database/
 GeneratedFiles/Debug/

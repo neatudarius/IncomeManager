@@ -12,7 +12,6 @@ struct Event {
     Event ( );
     Event ( QString _name, QString _type, double _amount, QDateTime _date, QString _notes );
     ~Event ( );
-    void connect ( );
     bool operator== ( const Event& e );
 
     int id;
@@ -21,9 +20,7 @@ struct Event {
     double amount;
     QDateTime date;
     QString notes;
-
-    QTableWidgetItem *idWidget, *nameWidget, *typeWidget, *amountWidget, *dateWidget, *notesWidget;
-    QWidget* actionsWidget;
+    QWidget* actions;
 
     void write ( FILE* f );
     void read ( FILE* f );
