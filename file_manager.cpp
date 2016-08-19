@@ -1,6 +1,5 @@
 #include "file_manager.h"
-#include <QDir>
-#include <QStandardPaths>
+
 
 FileManager::FileManager ( ) {
     QStringList pathsList = QStandardPaths::standardLocations ( QStandardPaths::AppDataLocation );
@@ -16,7 +15,7 @@ FileManager::FileManager ( ) {
 FileManager::~FileManager ( ) {}
 
 
-bool FileManager::createDirectory ( const std::string &dirName ) {
+bool FileManager::createDirectory ( const std::string& dirName ) {
     QString path = dirName . c_str ( );
 
     QDir dir;
@@ -28,8 +27,8 @@ bool FileManager::createDirectory ( const std::string &dirName ) {
 }
 
 
-bool FileManager::createFile ( const char *fileName ) {
-    FILE *fd = fopen ( fileName , "r" );
+bool FileManager::createFile ( const char* fileName ) {
+    FILE* fd = fopen ( fileName , "r" );
 
     if ( fd ) {
         fclose ( fd );
@@ -40,6 +39,6 @@ bool FileManager::createFile ( const char *fileName ) {
 }
 
 
-bool FileManager::createFile ( const std::string &fileName ) {
+bool FileManager::createFile ( const std::string& fileName ) {
     return createFile ( fileName . c_str ( ) );
 }

@@ -9,7 +9,7 @@ class AlertEmiter {
     ~AlertEmiter ( );
 
     // Display basic alert message box
-    static void emitMessageBox ( std::string &text );
+    static void emitMessageBox ( std::string& text );
     // Display basic alert message box
-    static void emitMessageBox ( const char *text );
+    static void emitMessageBox ( const char* text );
 };

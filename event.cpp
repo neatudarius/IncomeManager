@@ -1,7 +1,5 @@
-#include <QString>
 #include "event.h"
-#include <QPushButton>
-#include <QHBoxLayout>
+
 
 int Event::ID_COUNTER = 0;
 QStringList Event::TYPES = QStringList ( {
@@ -68,7 +66,7 @@ Event::~Event ( ) {
     //    }
 }
 
-bool Event::operator== ( const Event &e ) {
+bool Event::operator== ( const Event& e ) {
     return this -> name == e . name && this -> amount == e . amount && this -> date == e . date;
 }
 
@@ -91,19 +89,19 @@ void Event::connect ( ) {
     notesWidget = new QTableWidgetItem;
     notesWidget -> setData ( 0 , notes );
 
-    QPushButton *editableButton = new QPushButton;
+    QPushButton* editableButton = new QPushButton;
     editableButton -> setIcon ( QIcon ( "Images/Icons/locked-black.png" ) );
     //    QObject::connect(editableButton, SIGNAL(clicked(bool)), editableButton->pa, SLOT(tableCellChanged(int, int)));
 
     actionsWidget = new QWidget ( );
-    QHBoxLayout *pLayout = new QHBoxLayout ( actionsWidget );
+    QHBoxLayout* pLayout = new QHBoxLayout ( actionsWidget );
     pLayout -> addWidget ( editableButton );
     pLayout -> setAlignment ( Qt::AlignCenter );
     pLayout -> setContentsMargins ( 0 , 0 , 0 , 0 );
     actionsWidget -> setLayout ( pLayout );
 }
 
-void Event::write ( FILE *f ) {
+void Event::write ( FILE* f ) {
     fwrite ( &id , sizeof(int) , 1 , f );
     fwrite ( &amount , sizeof(double) , 1 , f );
 
@@ -112,7 +110,7 @@ void Event::write ( FILE *f ) {
 
     QStringList stringList ( { name, type, notes } );
     for ( auto str : stringList ) {
-        char *buffer = ( char *) str . toStdString ( ) . c_str ( );
+        char* buffer = ( char * ) str . toStdString ( ) . c_str ( );
         int len = str . toStdString ( ) . size ( );
 
         fwrite ( &len , sizeof(int) , 1 , f );
@@ -121,7 +119,7 @@ void Event::write ( FILE *f ) {
 }
 
 
-void Event::read ( FILE *f ) {
+void Event::read ( FILE* f ) {
     fread ( &id , sizeof(int) , 1 , f );
     fread ( &amount , sizeof(double) , 1 , f );
 

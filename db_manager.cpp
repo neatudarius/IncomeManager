@@ -1,9 +1,5 @@
 #include "db_manager.h"
-#include <QMessageBox>
-#include "alert_emiter.h"
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QtSql/QSqlDatabase>
+
 
 DbManager::DbManager ( ) {}
 

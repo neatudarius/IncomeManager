@@ -7,12 +7,12 @@ AlertEmiter::AlertEmiter ( ) {}
 AlertEmiter::~AlertEmiter ( ) {}
 
 // Display basic alert messafe box
-void AlertEmiter::emitMessageBox ( std::string &text ) {
+void AlertEmiter::emitMessageBox ( std::string& text ) {
     emitMessageBox ( text . c_str ( ) );
 }
 
 // Display basic alert message box
-void AlertEmiter::emitMessageBox ( const char *text ) {
+void AlertEmiter::emitMessageBox ( const char* text ) {
     QMessageBox msgBox;
 
     // display text
