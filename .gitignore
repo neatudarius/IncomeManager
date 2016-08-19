@@ -3,6 +3,7 @@ obj/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+IncomeManager.vcxproj.user
 *.suo
 *.sln
 *.sdf
@@ -12,5 +13,6 @@ obj/
 Extra/
 Debug/
 Win32/
+Database/
 GeneratedFiles/Debug/
 GeneratedFiles/Release/
