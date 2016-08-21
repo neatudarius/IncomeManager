@@ -1,6 +1,5 @@
 #include "file_manager.h"
 
-
 FileManager::FileManager ( ) {
     QStringList pathsList = QStandardPaths::standardLocations ( QStandardPaths::AppDataLocation );
     applicationDataLocation = pathsList[ 0 ];
@@ -11,9 +10,7 @@ FileManager::FileManager ( ) {
     createDirectory ( databasePath . toStdString ( ) );
 }
 
-
 FileManager::~FileManager ( ) {}
-
 
 bool FileManager::createDirectory ( const std::string& dirName ) {
     QString path = dirName . c_str ( );

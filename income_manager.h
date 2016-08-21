@@ -8,6 +8,8 @@
 #include "view_holder.h"
 
 #include <QCloseEvent>
+#include "file_manager.h"
+
 class IncomeManager : public QMainWindow {
     Q_OBJECT
 
@@ -33,6 +35,10 @@ class IncomeManager : public QMainWindow {
         void closeEvent ( QCloseEvent * event );
 
     private:
+        // This object is a holder for all views
         ViewHolder ui;
+        // This object handles database changes
         DbManager dbManager;
+        // This object handles file system operations
+        FileManager fm;
 };

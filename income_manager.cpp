@@ -63,11 +63,9 @@ void IncomeManager::closeEvent ( QCloseEvent * event ) {
     QMessageBox::StandardButton response = QMessageBox::question ( this, "Close Confirmation?",
                                                                    "Are you sure you want to exit?",
                                                                    QMessageBox::Yes | QMessageBox::No );
+    event->ignore ( );
     if ( response == QMessageBox::Yes ) {
-
         event->accept ( );
         return;
     }
-
-    event->ignore ( );
 };
