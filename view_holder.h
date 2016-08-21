@@ -6,11 +6,12 @@
 #include <QtWidgets/QWidget>
 #include "default_panel.h"
 #include "statistics_panel.h"
+#include "menu_bar.h"
 
 struct ViewHolder {
     QMainWindow* incomeManagerClass;
-    QToolBar* mainToolBar;
-    QStatusBar* statusBar;
+    MenuBar *menuBar;
+
     QWidget* centralWidget;
     QTabWidget* tabWidget;
     DefaultPanel* defaultPanel;
@@ -23,7 +24,5 @@ struct ViewHolder {
     void setupUi ( );
     void connectSignalToSlots ( );
     void createCentralWidget ( );
-    void createMainToolBar ( QWidget* parent );
-    void createStatusBar ( QWidget* parent );
     void createTabWidget ( QWidget* parent );
 };

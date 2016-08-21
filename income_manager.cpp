@@ -57,3 +57,17 @@ void IncomeManager::tableCellChanged ( int row, int column ) {
 void IncomeManager::typeSelected ( QString& type ) {
     emit DbManager::typeSelected ( type );
 }
+
+// Notify close application button was pressed
+void IncomeManager::closeEvent ( QCloseEvent * event ) {
+    QMessageBox::StandardButton response = QMessageBox::question ( this, "Close Confirmation?",
+                                                                   "Are you sure you want to exit?",
+                                                                   QMessageBox::Yes | QMessageBox::No );
+    if ( response == QMessageBox::Yes ) {
+
+        event->accept ( );
+        return;
+    }
+
+    event->ignore ( );
+};
