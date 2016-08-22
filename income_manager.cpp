@@ -1,20 +1,35 @@
 #include "income_manager.h"
 
+IncomeManager *IncomeManager::_INSTANCE = NULL;
+
 // Constructor: make app
 IncomeManager::IncomeManager ( QWidget* parent )
-    : QMainWindow ( parent ),
-      ui ( this ) {
+    : QMainWindow ( parent ), ui(this) {
 
     // Setup uiL create view
     ui . setupUi ( );
+
+    QMetaObject::connectSlotsByName ( this );
 
     // init view with data
     dbManager . initTable ( ui . defaultPanel -> table );
 }
 
 // Destructor close app
-IncomeManager::~IncomeManager ( ) {}
+IncomeManager::~IncomeManager ( ) {
+    if ( _INSTANCE != NULL ) {
+        delete _INSTANCE;
+        _INSTANCE = NULL;
+    }
+}
 
+// Method for accesing Instance of this application from every class
+IncomeManager* IncomeManager::getInstance ( ) {
+    if ( _INSTANCE == NULL ) {
+        _INSTANCE = new IncomeManager ( );
+    }
+    return _INSTANCE;
+}
 // Add event to default table
 void IncomeManager::addEvent ( ) {
     // Check if name was given

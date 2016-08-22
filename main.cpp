@@ -6,7 +6,12 @@ int main ( int argc, char *argv[] ) {
     QApplication a ( argc , argv );
 
     // create and display main window
-    IncomeManager w;
-    w . show ( );
-    return a . exec ( );
+    IncomeManager *w =  IncomeManager::getInstance ( ) ;
+    w -> show ( );
+    
+    int res = a.exec ( );
+
+    delete w;
+
+    return res;
 }

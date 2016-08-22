@@ -1,9 +1,8 @@
 #include "view_holder.h"
 
-ViewHolder::ViewHolder ( QMainWindow* parent ) : incomeManagerClass ( parent ) {}
+ViewHolder::ViewHolder ( QMainWindow *parent ) : mainWindow(parent) {}
 
 ViewHolder::~ViewHolder ( ) {
-    delete incomeManagerClass;
     delete centralWidget;
     delete menuBar;
     delete tabWidget;
@@ -23,24 +22,27 @@ void ViewHolder::setupUi ( ) {
 
     connectSignalToSlots ( );
 
-    QMetaObject::connectSlotsByName ( incomeManagerClass );
-}
+}                                 
 
 void ViewHolder::connectSignalToSlots ( ) {
-    QObject::connect ( defaultPanel -> addEvent , SIGNAL ( clicked ( ) ) , incomeManagerClass , SLOT ( addEvent ( ) ) );
-    QObject::connect ( defaultPanel -> table , SIGNAL ( cellChanged ( int, int ) ) , incomeManagerClass , SLOT ( tableCellChanged ( int, int ) ) );
-    QObject::connect ( defaultPanel -> type , SIGNAL ( editTextChanged ( QString ) ) , incomeManagerClass , SLOT ( typeSelected ( QString ) ) );
+//    IncomeManager *w = IncomeManager::getInstance ( );
+//    QObject::connect ( defaultPanel -> addEvent , SIGNAL ( clicked ( ) ), 
+//                       w, SLOT ( addEvent ( ) ) );
+//    QObject::connect ( defaultPanel -> table, SIGNAL ( cellChanged ( int, int ) ), 
+//                       w, SLOT ( tableCellChanged ( int, int ) ) );
+//    QObject::connect ( defaultPanel -> type, SIGNAL ( editTextChanged ( QString ) ), 
+//                       w, SLOT ( typeSelected ( QString ) ) );
 }
 
 void ViewHolder::createCentralWidget ( ) {
-    if ( incomeManagerClass -> objectName ( ) . isEmpty ( ) ) {
-        incomeManagerClass -> setObjectName ( QStringLiteral ( "IncomeManagerClass" ) );
+    if ( mainWindow -> objectName ( ) . isEmpty ( ) ) {
+        mainWindow -> setObjectName ( QStringLiteral ( "IncomeManagerClass" ) );
     }
-    incomeManagerClass -> showMaximized ( );
-    centralWidget = new QWidget ( incomeManagerClass );
+    mainWindow -> showMaximized ( );
+    centralWidget = new QWidget ( mainWindow );
     centralWidget -> setObjectName ( QStringLiteral ( "centralWidget" ) );
-    incomeManagerClass -> setCentralWidget ( centralWidget );
-    incomeManagerClass -> setWindowTitle ( QApplication::translate ( "IncomeManagerClass" , "IncomeManager" , 0 ) );
+    mainWindow -> setCentralWidget ( centralWidget );
+    mainWindow -> setWindowTitle ( QApplication::translate ( "IncomeManagerClass" , "IncomeManager" , 0 ) );
 }
 
 void ViewHolder::createTabWidget ( QWidget* parent ) {

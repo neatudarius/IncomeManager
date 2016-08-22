@@ -2,24 +2,22 @@
      IncomeManager main class
 */
 #pragma once
-
-#include "db_manager.h"
-#include "alert_emiter.h"
-#include "view_holder.h"
-
+#include <QMainWindow>
 #include <QCloseEvent>
+#include "alert_emiter.h"
+#include "db_manager.h"
+#include "view_holder.h"
 #include "file_manager.h"
 
 class IncomeManager : public QMainWindow {
     Q_OBJECT
 
     public:
-        // Constructor: make app
-        IncomeManager ( QWidget* parent = 0 );
-
         // Destructor close app
         ~IncomeManager ( );
 
+        // Method for accesing Instance of this application from every class
+        static IncomeManager* getInstance ( );
     
     public slots:
         // Add event to default table
@@ -35,6 +33,12 @@ class IncomeManager : public QMainWindow {
         void closeEvent ( QCloseEvent * event );
 
     private:
+        // Constructor: make window
+        IncomeManager ( QWidget* parent = 0 );
+        
+        // Class instance (Singeton Pattern)
+        static IncomeManager *_INSTANCE;
+
         // This object is a holder for all views
         ViewHolder ui;
         // This object handles database changes
