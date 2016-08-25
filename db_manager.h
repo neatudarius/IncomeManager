@@ -13,7 +13,7 @@ class DbManager : QObject {
     Q_OBJECT
     public:
 
-    void initTable (QTableWidget* defaultTableWidget) const;
+    void populateTable ( ) const;
 
     static DbManager* getInstance ();
 
@@ -22,6 +22,8 @@ class DbManager : QObject {
     QVector <Event> getEvents () const;
 
     int getEventsCount () const;
+    void load ( QVector<Event> _events );
+    void reset ( );
 
     public slots:
 
@@ -29,7 +31,6 @@ class DbManager : QObject {
     void typeSelected (const QString& type);
 
     void addEvent ();
-
     void tableCellChanged (int row, int column);
 
     private:
@@ -37,6 +38,7 @@ class DbManager : QObject {
     QVector <Event> events;
 
     DbManager ();
-
     ~DbManager ();
+
+    
 };

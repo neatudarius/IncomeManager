@@ -18,7 +18,6 @@ DefaultPanel::~DefaultPanel () {
     delete addEvent;
 }
 
-
 void DefaultPanel::createAddEventForm (QWidget* parent) {
     name = new QLineEdit(parent);
     name->setObjectName(QStringLiteral ( "name" ));
@@ -38,8 +37,8 @@ void DefaultPanel::createAddEventForm (QWidget* parent) {
     type->setGeometry(QRect(350 , 10 , 150 , 20));
     type->addItems(Event::TYPES);
     type->setEditable(false);
-    QObject::connect ( type, SIGNAL ( editTextChanged ( QString ) ),
-              ( QObject* ) DbManager::getInstance ( ), SLOT ( typeSelected ( QString ) ));
+    QObject::connect(type , SIGNAL ( editTextChanged ( QString ) ) ,
+                     (QObject*) DbManager::getInstance() , SLOT ( typeSelected ( QString ) ));
 
     date = new QDateTimeEdit(parent);
     date->setObjectName(QStringLiteral ( "date" ));
@@ -56,8 +55,8 @@ void DefaultPanel::createAddEventForm (QWidget* parent) {
     addEvent->setObjectName(QStringLiteral ( "addEvent" ));
     addEvent->setGeometry(QRect(860 , 0 , 75 , 40));
     addEvent->setText(QApplication::translate("IncomeManagerClass" , "Add event" , 0));
-    QObject::connect ( addEvent, SIGNAL ( clicked ( ) ),
-              ( QObject* ) DbManager::getInstance ( ), SLOT ( addEvent ( ) ) );
+    QObject::connect(addEvent , SIGNAL ( clicked ( ) ) ,
+                     (QObject*) DbManager::getInstance() , SLOT ( addEvent ( ) ));
 }
 
 void DefaultPanel::createTableWidget (QWidget* parent) {
@@ -83,4 +82,12 @@ void DefaultPanel::createTableWidget (QWidget* parent) {
     }
     table->setObjectName(QStringLiteral ( "table" ));
     table->setGeometry(QRect(50 , 50 , 1200 , 600));
+}
+
+void DefaultPanel::resetAddEventForm () {
+    name->clear();
+    amount->clear();
+    type->clearEditText();
+    date->clear();
+    notes->clear();
 }

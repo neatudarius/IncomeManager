@@ -23,5 +23,9 @@ struct Event {
     QWidget* actions;
 
     void write ( FILE* f );
+
+    void writeStdString (FILE* f, const std::string& str);
+
     void read ( FILE* f );
+    QString toQString ( );
 };

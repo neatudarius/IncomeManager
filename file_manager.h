@@ -13,6 +13,12 @@ class FileManager {
 
     bool createFile (const char* fileName);
 
+    bool openFile (const char* fileName);
+
+    void setCurrentFile (const QString& file);
+    void save ( );
+    void load ( );
+
     static FileManager* getInstance ();
 
     static void releaseInstance ();
@@ -20,6 +26,8 @@ class FileManager {
     private:
     QString applicationDataLocation;
     QString databasePath;
+    QString currentFile;
+
     static FileManager* _INSTANCE;
 
     FileManager ();

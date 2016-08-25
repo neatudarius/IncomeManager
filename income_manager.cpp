@@ -14,12 +14,12 @@ void IncomeManager::init () {
 
     // init view with data
     db = DbManager::getInstance ( );
-    db->initTable(ui->defaultPanel->table);
+//    db->initTable(ui->defaultPanel->table);
 
     // init file manager
     fm = FileManager::getInstance ( );
 
-    //
+    // init file manager
     controller = Controller::getInstance ( );
 
     QMetaObject::connectSlotsByName ( this );

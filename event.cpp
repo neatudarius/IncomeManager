@@ -1,5 +1,5 @@
 #include "event.h"
-
+#include "alert_emiter.h"
 
 int Event::ID_COUNTER = 0;
 QStringList Event::TYPES = QStringList ( {
@@ -48,14 +48,17 @@ void Event::write ( FILE* f ) {
     qint64 mSecs = date . toMSecsSinceEpoch ( );
     fwrite ( &mSecs , sizeof(qint64) , 1 , f );
 
-    QStringList stringList ( { name, type, notes } );
-    for ( auto str : stringList ) {
-        char* buffer = ( char * ) str . toStdString ( ) . c_str ( );
-        int len = str . toStdString ( ) . size ( );
+    writeStdString ( f, name.toStdString ( ) );
+    writeStdString ( f, type.toStdString ( ) );
+    writeStdString ( f, notes.toStdString ( ) );
+}
 
-        fwrite ( &len , sizeof(int) , 1 , f );
-        fwrite ( buffer , sizeof(char) , len , f );
-    }
+void Event::writeStdString ( FILE* f, const std::string& str ) {
+    char* buffer = ( char * ) ( str.c_str ( ) );
+    int len = str.size ( );
+
+    fwrite ( &len, sizeof ( int ), 1, f );
+    fwrite ( buffer, sizeof ( char ), len, f );
 }
 
 
@@ -65,11 +68,14 @@ void Event::read ( FILE* f ) {
 
     qint64 mSecs;
     fread ( &mSecs , sizeof(qint64) , 1 , f );
-    date . fromMSecsSinceEpoch ( mSecs );
+    date = QDateTime:: fromMSecsSinceEpoch ( mSecs );
 
     QStringList stringList;
-    stringList . reserve ( 3 );
-    for ( auto str : stringList ) {
+    stringList.push_back ( name );
+    stringList.push_back ( type );
+    stringList.push_back ( notes );
+
+    for ( auto& str : stringList ) {
         char buffer[2000];
         int len;
 
@@ -83,4 +89,24 @@ void Event::read ( FILE* f ) {
     name = stringList[ 0 ];
     type = stringList[ 1 ];
     notes = stringList[ 2 ];
+}
+
+QString Event::toQString () {
+    QString qstr;
+    qstr.append ( QStringLiteral("name: ") );
+    qstr.append ( name );
+
+    qstr.append ( QStringLiteral ( "type: " ) );
+    qstr.append ( type );
+
+    qstr.append ( QStringLiteral ( "amount: " ) );
+    qstr.append ( QString::number(amount) );
+
+    qstr.append ( QStringLiteral ( "date: " ) );
+    qstr.append ( QString::number ( date.toMSecsSinceEpoch ( ) ) );
+
+    qstr.append ( QStringLiteral ( "notes: " ) );
+    qstr.append ( notes );
+
+    return  qstr;
 }

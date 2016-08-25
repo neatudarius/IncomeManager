@@ -22,6 +22,10 @@ void DbManager::releaseInstance ( ) {
     }
 }
 
+void DbManager::reset ( ) {
+    events.clear ( );
+    ViewHolder::getInstance ( )->defaultPanel->table->clearContents ( );
+}
 
 void DbManager::addEvent () {
     DefaultPanel *dp = ViewHolder::getInstance ( )->defaultPanel;
@@ -61,8 +65,9 @@ void DbManager::addEvent () {
     }
     events.push_back(event);
 
-    dp->table->setRowCount ( events.size() );
-    initTable ( dp->table );
+    
+    populateTable ( );
+    dp->resetAddEventForm ( );
 }
 
 
@@ -75,7 +80,14 @@ int DbManager::getEventsCount () const {
     return events.size();
 }
 
-void DbManager::initTable (QTableWidget* table) const {
+void DbManager::load (QVector<Event> _events) {
+    reset ( );
+    events = _events;
+    populateTable ( );
+}
+
+void DbManager::populateTable ( ) const {
+    QTableWidget* table = ViewHolder::getInstance ( )->defaultPanel->table;
     table->setRowCount(events.size());
 
     QTableWidgetItem* item = NULL;

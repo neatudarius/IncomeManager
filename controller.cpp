@@ -27,7 +27,9 @@ void Controller::newFile () {
                                                         tr("New file") ,
                                                         QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[ 0 ] ,
                                                         tr("Income Manager Files (*.income)"));
-    AlertEmiter::emitMessageBox(fileName.toStdString().c_str());
+
+    FileManager::getInstance ( )->createFile ( fileName.toStdString ( ).c_str ( ) );
+    FileManager::getInstance ( )->setCurrentFile ( fileName );
 }
 
 // Open database (file)
@@ -36,12 +38,13 @@ void Controller::open () {
                                                         tr("Open file") ,
                                                         QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[ 0 ] ,
                                                         tr("Income Manager Files (*.income)"));
-    AlertEmiter::emitMessageBox(fileName.toStdString().c_str());
+    FileManager::getInstance ( )->setCurrentFile ( fileName );
+    FileManager::getInstance ( )->load ( );
 }
 
 // Save current database (file)
 void Controller::save () {
-    AlertEmiter::emitMessageBox("save");
+    FileManager::getInstance ( )->save ( );
 }
 
 // Save current database to other file
@@ -49,6 +52,8 @@ void Controller::saveAs () {
     QString fileName = QFileDialog::getSaveFileName(NULL ,
                                                         tr("Save as") ,
                                                         QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[ 0 ] ,
-                                                        tr("Income Manager Files (*.income)"));
-    AlertEmiter::emitMessageBox(fileName.toStdString().c_str());
+                                                        tr("Income Manager Files (*.income)")); 
+    FileManager::getInstance ( )->createFile ( fileName.toStdString ( ).c_str ( ) );
+    FileManager::getInstance ( )->setCurrentFile ( fileName );
+    save ( );
 }

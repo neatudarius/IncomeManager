@@ -22,6 +22,8 @@ struct DefaultPanel : QWidget {
     // Methods
     DefaultPanel ( QWidget* parent );
     ~DefaultPanel ( );
-    void createAddEventForm ( QWidget* parent );
     void createTableWidget ( QWidget* parent );
+
+    void createAddEventForm ( QWidget* parent );
+    void resetAddEventForm ( );
 };
