@@ -7,11 +7,12 @@ int main ( int argc, char *argv[] ) {
 
     // create and display main window
     IncomeManager *w =  IncomeManager::getInstance ( ) ;
+    w->init ( );
     w -> show ( );
     
     int res = a.exec ( );
 
-    delete w;
+    IncomeManager::releaseInstance ( );
 
     return res;
 }

@@ -1,86 +1,62 @@
 #include "income_manager.h"
+#include "view_holder.h"
 
-IncomeManager *IncomeManager::_INSTANCE = NULL;
+IncomeManager* IncomeManager::_INSTANCE = NULL;
 
 // Constructor: make app
-IncomeManager::IncomeManager ( QWidget* parent )
-    : QMainWindow ( parent ), ui(this) {
+IncomeManager::IncomeManager (QWidget* parent)
+    : QMainWindow(parent) {}
 
+void IncomeManager::init () {
     // Setup uiL create view
-    ui . setupUi ( );
-
-    QMetaObject::connectSlotsByName ( this );
+    ui = ViewHolder::getInstance(this);
+    ui->setupUi();
 
     // init view with data
-    dbManager . initTable ( ui . defaultPanel -> table );
+    db = DbManager::getInstance ( );
+    db->initTable(ui->defaultPanel->table);
+
+    // init file manager
+    fm = FileManager::getInstance ( );
+
+    //
+    controller = Controller::getInstance ( );
+
+    QMetaObject::connectSlotsByName ( this );
 }
 
 // Destructor close app
-IncomeManager::~IncomeManager ( ) {
-    if ( _INSTANCE != NULL ) {
+IncomeManager::~IncomeManager () {
+    ViewHolder::releaseInstance();
+    DbManager::releaseInstance ( );
+    FileManager::releaseInstance ( );
+    Controller::releaseInstance ( );
+}
+
+// Method for accesing the Instance of this class
+IncomeManager* IncomeManager::getInstance () {
+    if (_INSTANCE == NULL) {
+        _INSTANCE = new IncomeManager();
+    }
+    return _INSTANCE;
+}
+
+// Method for release the Instance of this class
+void IncomeManager::releaseInstance () {
+    if (_INSTANCE != NULL) {
         delete _INSTANCE;
         _INSTANCE = NULL;
     }
 }
 
-// Method for accesing Instance of this application from every class
-IncomeManager* IncomeManager::getInstance ( ) {
-    if ( _INSTANCE == NULL ) {
-        _INSTANCE = new IncomeManager ( );
-    }
-    return _INSTANCE;
-}
-// Add event to default table
-void IncomeManager::addEvent ( ) {
-    // Check if name was given
-    if ( !ui . defaultPanel -> name -> text ( ) . length ( ) ) {
-        AlertEmiter::emitMessageBox ( "Name is missing" );
-        return;
-    }
-
-    // Check if amount was given
-    if ( !ui . defaultPanel -> amount -> text ( ) . length ( ) ) {
-        AlertEmiter::emitMessageBox ( "Amount is missing" );
-        return;
-    }
-
-    // Check if type was given
-    if ( !ui . defaultPanel -> type -> currentText ( ) . length ( ) ) {
-        AlertEmiter::emitMessageBox ( "Type is missing" );
-        return;
-    }
-
-    // Collect info
-    QString name = ui . defaultPanel -> name -> text ( );
-    double amount = ui . defaultPanel -> amount -> text ( ) . toDouble ( );
-    QString type = ui . defaultPanel -> type -> currentText ( );
-    QDateTime date = ui . defaultPanel -> date -> dateTime ( );
-    QString notes = ui . defaultPanel -> notes -> text ( );
-
-    // Save event to database and refresh view
-    dbManager . addEvent ( Event ( name , type , amount , date , notes ) );
-    ui . defaultPanel -> table -> setRowCount ( dbManager . getEventsCount ( ) );
-    dbManager . initTable ( ui . defaultPanel -> table );
-}
-
-// TODO
-void IncomeManager::tableCellChanged ( int row, int column ) {
-    QString text = ui . defaultPanel -> table -> item ( row , column ) -> text ( );
-}
-
-// Notify a type was selected. Save it if is a new one.
-void IncomeManager::typeSelected ( QString& type ) {
-    emit DbManager::typeSelected ( type );
-}
-
 // Notify close application button was pressed
-void IncomeManager::closeEvent ( QCloseEvent * event ) {
-    QMessageBox::StandardButton response = QMessageBox::question ( this, "Close Confirmation?",
-                                                                   "Are you sure you want to exit?",
-                                                                   QMessageBox::Yes | QMessageBox::No );
-    event->ignore ( );
-    if ( response == QMessageBox::Yes ) {
-        event->accept ( );
+void IncomeManager::closeEvent (QCloseEvent* event) {
+    QMessageBox::StandardButton response = QMessageBox::question(this , "Close Confirmation?" ,
+                                                                 "Are you sure you want to exit?" ,
+                                                                 QMessageBox::Yes | QMessageBox::No);
+    event->ignore();
+    if (response == QMessageBox::Yes) {
+        event->accept();
         return;
     }
 };

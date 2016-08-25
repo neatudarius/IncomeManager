@@ -7,13 +7,22 @@
 
 class FileManager {
     public:
-        FileManager ( );
-        ~FileManager ( );
-        bool createDirectory ( const std::string& dirName );
-        bool createFile ( const std::string& fileName );
-        bool createFile ( const char* fileName );
+    bool createDirectory (const std::string& dirName);
+
+    bool createFile (const std::string& fileName);
+
+    bool createFile (const char* fileName);
+
+    static FileManager* getInstance ();
+
+    static void releaseInstance ();
 
     private:
-        QString applicationDataLocation;
-        QString databasePath;
+    QString applicationDataLocation;
+    QString databasePath;
+    static FileManager* _INSTANCE;
+
+    FileManager ();
+
+    ~FileManager ();
 };

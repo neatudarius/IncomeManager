@@ -8,22 +8,28 @@
 #include "statistics_panel.h"
 #include "menu_bar.h"
 
-class IncomeManager;
-
-struct ViewHolder {
-    QMainWindow *mainWindow;
-    MenuBar *menuBar;
+struct ViewHolder  {
+    QMainWindow* mainWindow;
+    MenuBar* menuBar;
     QWidget* centralWidget;
     QTabWidget* tabWidget;
     DefaultPanel* defaultPanel;
     StatisticsPanel* statisticsPanel;
 
+    ~ViewHolder ();
 
-    // Methods
-    ViewHolder ( QMainWindow *parent );
-    ~ViewHolder ( );
-    void setupUi ( );
-    void connectSignalToSlots ( );
-    void createCentralWidget ( );
-    void createTabWidget ( QWidget* parent );
+    void setupUi ();
+
+    void createCentralWidget ();
+
+    void createTabWidget (QWidget* parent);
+
+    static ViewHolder* getInstance ( QMainWindow* parent = NULL );
+
+    static void releaseInstance ();
+
+    private:
+    static ViewHolder* _INSTANCE;
+
+    ViewHolder (QMainWindow* parent);
 };

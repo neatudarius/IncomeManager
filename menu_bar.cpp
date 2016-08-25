@@ -1,4 +1,5 @@
 #include "menu_bar.h"
+#include "Action.h"
 
 // Constructor
 MenuBar::MenuBar ( QWidget* parent ) : QMenuBar(parent) {
@@ -15,43 +16,12 @@ void MenuBar::fileMenu ( ) {
     QMenu* menu = new QMenu ( "File" );
 
     // Menu's actions
-    menu->addAction ( new Action ( "&New", this, "Create new file", &MenuBar::newFile, QKeySequence::New) );
-    menu->addAction ( new Action ( "&Open", this, "Open file", &MenuBar::open, QKeySequence::Open ) );
-    menu->addAction ( new Action ( "&Save", this, "Save current file", &MenuBar::save, QKeySequence::Save ) );
-    menu->addAction ( new Action ( "&Save as ...", this, "Save data to othr file", &MenuBar::saveAs, QKeySequence::SaveAs ) );
+    menu->addAction ( new Action<Controller> ( "&New", "Create new file", &Controller::newFile, QKeySequence::New ) );
+    menu->addAction ( new Action<Controller> ( "&Open",  "Open file", &Controller::open, QKeySequence::Open ) );
+    menu->addAction ( new Action<Controller> ( "&Save", "Save current file", &Controller::save, QKeySequence::Save ) );
+    menu->addAction ( new Action<Controller> ( "&Save as ...", "Save data to othr file", &Controller::saveAs, QKeySequence::SaveAs ) );
 
     // Save it
     addMenu ( menu );
 }
 
-// Create new database (file)
-void MenuBar::newFile ( ) {
-    QString fileName = QFileDialog::getSaveFileName ( this,
-                                                      tr ( "New file" ), 
-                                                      QStandardPaths::standardLocations ( QStandardPaths::DesktopLocation ) [ 0 ],
-                                                      tr ( "Income Manager Files (*.income)" ) );
-    AlertEmiter::emitMessageBox ( fileName.toStdString().c_str() );
-}
-
-// Open database (file)
-void MenuBar::open ( ) {
-    QString fileName = QFileDialog::getOpenFileName ( this,
-                                                      tr ( "Open file" ),
-                                                      QStandardPaths::standardLocations ( QStandardPaths::DesktopLocation ) [ 0 ],
-                                                      tr ( "Income Manager Files (*.income)" ) );
-    AlertEmiter::emitMessageBox ( fileName.toStdString ( ).c_str ( ) );
-}
-
-// Save current database (file)
-void MenuBar::save ( ) {
-    AlertEmiter::emitMessageBox ( "save" );
-}
-
-// Save current database to other file
-void MenuBar::saveAs ( ) {
-    QString fileName = QFileDialog::getSaveFileName ( this,
-                                                      tr ( "Save as" ),
-                                                      QStandardPaths::standardLocations ( QStandardPaths::DesktopLocation ) [ 0 ],
-                                                      tr ( "Income Manager Files (*.income)" ) );
-    AlertEmiter::emitMessageBox ( fileName.toStdString ( ).c_str ( ) );
-}

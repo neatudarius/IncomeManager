@@ -7,20 +7,36 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 
-class DbManager {
+struct DefaultPanel;
+
+class DbManager : QObject {
+    Q_OBJECT
     public:
-        DbManager ( );
-        ~DbManager ( );
-        void initTable ( QTableWidget* defaultTableWidget ) const;
-        void addEvent ( const Event& e );
-        QVector < Event > getEvents ( ) const;
-        int getEventsCount ( ) const;
+
+    void initTable (QTableWidget* defaultTableWidget) const;
+
+    static DbManager* getInstance ();
+
+    static void releaseInstance ();
+
+    QVector <Event> getEvents () const;
+
+    int getEventsCount () const;
 
     public slots:
 
-        // Notify a type was selected. Save it if is a new one.
-        static void typeSelected ( const QString& type );
+    // Notify a type was selected. Save it if is a new one.
+    void typeSelected (const QString& type);
+
+    void addEvent ();
+
+    void tableCellChanged (int row, int column);
 
     private:
-        QVector < Event > events;
+    static DbManager* _INSTANCE;
+    QVector <Event> events;
+
+    DbManager ();
+
+    ~DbManager ();
 };
