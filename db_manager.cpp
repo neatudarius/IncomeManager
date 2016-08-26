@@ -2,6 +2,7 @@
 #include "income_manager.h"
 #include "default_panel.h"
 #include  "view_holder.h"
+#include <iostream>
 DbManager* DbManager::_INSTANCE = NULL;
 
 DbManager::DbManager () {}
@@ -26,6 +27,8 @@ void DbManager::reset ( ) {
     events.clear ( );
     ViewHolder::getInstance ( )->defaultPanel->table->clearContents ( );
 }
+
+
 
 void DbManager::addEvent () {
     DefaultPanel *dp = ViewHolder::getInstance ( )->defaultPanel;
@@ -63,16 +66,17 @@ void DbManager::addEvent () {
             return;
         }
     }
-    events.push_back(event);
 
-    
+    events.push_back(event);
+    IncomeManager::getInstance ( )->dataChanged ( );
+
     populateTable ( );
     dp->resetAddEventForm ( );
 }
 
 
 
-QVector <Event> DbManager::getEvents () const {
+std::vector <Event> DbManager::getEvents () const {
     return events;
 }
 
@@ -80,7 +84,7 @@ int DbManager::getEventsCount () const {
     return events.size();
 }
 
-void DbManager::load (QVector<Event> _events) {
+void DbManager::load (std::vector<Event> _events) {
     reset ( );
     events = _events;
     populateTable ( );
@@ -135,3 +139,10 @@ void DbManager::typeSelected (const QString& type) {
 }
 
 void DbManager::tableCellChanged ( int row, int column ) {}
+
+void DbManager::print ( ) {
+//    std::copy ( events.begin ( ), events.end ( ), std::ostream_iterator<char> ( std::cout, " " ) );
+    for ( auto event : events ) {
+        std::cout << event << "\n";
+    }
+}

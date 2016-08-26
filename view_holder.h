@@ -8,8 +8,7 @@
 #include "statistics_panel.h"
 #include "menu_bar.h"
 
-struct ViewHolder  {
-    QMainWindow* mainWindow;
+struct ViewHolder : public QMainWindow  {
     MenuBar* menuBar;
     QWidget* centralWidget;
     QTabWidget* tabWidget;
@@ -24,7 +23,14 @@ struct ViewHolder  {
 
     void createTabWidget (QWidget* parent);
 
-    static ViewHolder* getInstance ( QMainWindow* parent = NULL );
+    // Notify close application button was pressed
+    void closeEvent (QCloseEvent* event);
+
+    void setTitleSaved ();
+
+    void setTitleChanged ();
+
+    static ViewHolder* getInstance ( );
 
     static void releaseInstance ();
 

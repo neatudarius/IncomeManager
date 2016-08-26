@@ -15,9 +15,15 @@ class FileManager {
 
     bool openFile (const char* fileName);
 
-    void setCurrentFile (const QString& file);
+    void reset ();
+
+    bool setCurrentFile (const QString& file);
     void save ( );
     void load ( );
+
+    bool fileSet ();
+
+    QString getCurrentFile ();
 
     static FileManager* getInstance ();
 

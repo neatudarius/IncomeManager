@@ -4,33 +4,33 @@
 IncomeManager* IncomeManager::_INSTANCE = NULL;
 
 // Constructor: make app
-IncomeManager::IncomeManager (QWidget* parent)
-    : QMainWindow(parent) {}
+IncomeManager::IncomeManager () {
+    saved = true;
+}
 
 void IncomeManager::init () {
     // Setup uiL create view
-    ui = ViewHolder::getInstance(this);
+    ui = ViewHolder::getInstance();
     ui->setupUi();
 
     // init view with data
-    db = DbManager::getInstance ( );
-//    db->initTable(ui->defaultPanel->table);
+    db = DbManager::getInstance();
 
     // init file manager
-    fm = FileManager::getInstance ( );
+    fm = FileManager::getInstance();
 
     // init file manager
-    controller = Controller::getInstance ( );
+    controller = Controller::getInstance();
 
-    QMetaObject::connectSlotsByName ( this );
+    QMetaObject::connectSlotsByName(this);
 }
 
 // Destructor close app
 IncomeManager::~IncomeManager () {
     ViewHolder::releaseInstance();
-    DbManager::releaseInstance ( );
-    FileManager::releaseInstance ( );
-    Controller::releaseInstance ( );
+    DbManager::releaseInstance();
+    FileManager::releaseInstance();
+    Controller::releaseInstance();
 }
 
 // Method for accesing the Instance of this class
@@ -49,14 +49,15 @@ void IncomeManager::releaseInstance () {
     }
 }
 
-// Notify close application button was pressed
-void IncomeManager::closeEvent (QCloseEvent* event) {
-    QMessageBox::StandardButton response = QMessageBox::question(this , "Close Confirmation?" ,
-                                                                 "Are you sure you want to exit?" ,
-                                                                 QMessageBox::Yes | QMessageBox::No);
-    event->ignore();
-    if (response == QMessageBox::Yes) {
-        event->accept();
-        return;
-    }
-};
+bool IncomeManager::savedChanges () {
+    return  saved;
+}
+void IncomeManager::dataChanged () {
+    saved = false;
+    ViewHolder::getInstance ( )->setTitleChanged ( );
+}
+
+void IncomeManager::dataSaved ( ) {
+    saved = true;
+    ViewHolder::getInstance ( )->setTitleSaved( );
+}

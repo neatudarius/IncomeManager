@@ -110,3 +110,13 @@ QString Event::toQString () {
 
     return  qstr;
 }
+
+std::ostream& operator<< (std::ostream& out, const Event& e) {
+    out << "id: " << e.id << " "
+        << "name:" << e.name.toStdString ( ) << " "
+        << "amount: " << e.amount << " "
+        << "type: " << e.type.toStdString ( ) << " "
+        << "notes: " << e.notes.toStdString ( ) << "\n";
+
+    return  out;
+}

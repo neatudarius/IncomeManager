@@ -19,11 +19,12 @@ class DbManager : QObject {
 
     static void releaseInstance ();
 
-    QVector <Event> getEvents () const;
+    std::vector<Event> getEvents () const;
 
     int getEventsCount () const;
-    void load ( QVector<Event> _events );
+    void load ( std::vector<Event> _events );
     void reset ( );
+    void print ( );
 
     public slots:
 
@@ -35,10 +36,8 @@ class DbManager : QObject {
 
     private:
     static DbManager* _INSTANCE;
-    QVector <Event> events;
+    std::vector<Event> events;
 
     DbManager ();
     ~DbManager ();
-
-    
 };

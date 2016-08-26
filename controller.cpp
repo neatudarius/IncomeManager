@@ -28,8 +28,8 @@ void Controller::newFile () {
                                                         QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[ 0 ] ,
                                                         tr("Income Manager Files (*.income)"));
 
-    FileManager::getInstance ( )->createFile ( fileName.toStdString ( ).c_str ( ) );
-    FileManager::getInstance ( )->setCurrentFile ( fileName );
+    FileManager::getInstance()->createFile(fileName.toStdString().c_str());
+    FileManager::getInstance()->setCurrentFile(fileName);
 }
 
 // Open database (file)
@@ -38,22 +38,39 @@ void Controller::open () {
                                                         tr("Open file") ,
                                                         QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[ 0 ] ,
                                                         tr("Income Manager Files (*.income)"));
-    FileManager::getInstance ( )->setCurrentFile ( fileName );
-    FileManager::getInstance ( )->load ( );
+    FileManager::getInstance()->setCurrentFile(fileName);
+    if (FileManager::getInstance()->fileSet()) {
+        FileManager::getInstance()->load();
+    }
 }
 
 // Save current database (file)
 void Controller::save () {
-    FileManager::getInstance ( )->save ( );
+    if ( IncomeManager::getInstance()->savedChanges ( ) ) {
+        return;
+    }
+
+    if (FileManager::getInstance()->fileSet()) {
+        FileManager::getInstance()->save();
+    }
+    else {
+        saveAs();
+    }
 }
 
 // Save current database to other file
 void Controller::saveAs () {
+    if ( IncomeManager::getInstance ( )->savedChanges ( ) ) {
+        return;
+    }
+
     QString fileName = QFileDialog::getSaveFileName(NULL ,
                                                         tr("Save as") ,
                                                         QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[ 0 ] ,
-                                                        tr("Income Manager Files (*.income)")); 
-    FileManager::getInstance ( )->createFile ( fileName.toStdString ( ).c_str ( ) );
-    FileManager::getInstance ( )->setCurrentFile ( fileName );
-    save ( );
+                                                        tr("Income Manager Files (*.income)"));
+    FileManager::getInstance()->createFile(fileName.toStdString().c_str());
+    FileManager::getInstance()->setCurrentFile(fileName);
+    if (FileManager::getInstance()->fileSet()) {
+        FileManager::getInstance()->save();
+    }
 }

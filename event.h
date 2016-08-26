@@ -28,4 +28,6 @@ struct Event {
 
     void read ( FILE* f );
     QString toQString ( );
+
+    friend std::ostream& operator<< ( std::ostream& out, const Event& e );
 };

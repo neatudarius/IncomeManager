@@ -3,7 +3,7 @@
 
 ViewHolder* ViewHolder::_INSTANCE = NULL;
 
-ViewHolder::ViewHolder (QMainWindow* parent) : mainWindow(parent) {}
+ViewHolder::ViewHolder ( QMainWindow* parent ) : QMainWindow ( parent ) {}
 
 ViewHolder::~ViewHolder () {
     delete centralWidget;
@@ -13,9 +13,9 @@ ViewHolder::~ViewHolder () {
     delete statisticsPanel;
 }
 
-ViewHolder* ViewHolder::getInstance (QMainWindow* parent) {
+ViewHolder* ViewHolder::getInstance () {
     if (_INSTANCE == NULL) {
-        _INSTANCE = new ViewHolder(parent);
+        _INSTANCE = new ViewHolder(NULL);
     }
 
     return _INSTANCE;
@@ -40,14 +40,14 @@ void ViewHolder::setupUi () {
 
 
 void ViewHolder::createCentralWidget () {
-    if (mainWindow->objectName().isEmpty()) {
-        mainWindow->setObjectName(QStringLiteral ( "IncomeManagerClass" ));
+    if (objectName().isEmpty()) {
+        setObjectName(QStringLiteral ( "IncomeManagerClass" ));
     }
-    mainWindow->showMaximized();
-    centralWidget = new QWidget(mainWindow);
+    showMaximized();
+    centralWidget = new QWidget(this);
     centralWidget->setObjectName(QStringLiteral ( "centralWidget" ));
-    mainWindow->setCentralWidget(centralWidget);
-    mainWindow->setWindowTitle(QApplication::translate("IncomeManagerClass" , "IncomeManager" , 0));
+    setCentralWidget(centralWidget);
+    setWindowTitle(QApplication::translate("IncomeManagerClass" , "IncomeManager" , 0));
 }
 
 void ViewHolder::createTabWidget (QWidget* parent) {
@@ -57,4 +57,51 @@ void ViewHolder::createTabWidget (QWidget* parent) {
     tabWidget->addTab(statisticsPanel , QObject::tr("Statistics Panel"));
     tabWidget->setGeometry(QRect(0 , 20 , 1300 , 650));
 }
+
+// Notify close application button was pressed
+void ViewHolder::closeEvent ( QCloseEvent* event ) {
+    bool saved = IncomeManager::getInstance ( )->savedChanges ( );
+    QMessageBox::StandardButton res;
+    if ( saved ) {
+        res = QMessageBox::question ( ViewHolder::getInstance ( ), "Close Confirmation",
+                                "Are you sure you want to exit?",
+                                QMessageBox::Yes | QMessageBox::No );
+
+    } else {
+        res = QMessageBox::question ( ViewHolder::getInstance ( ), "Close Confirmation",
+                                           "Do you want to save changes?",
+                                           QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    }
+
+    // Check if user wants to save data
+    if ( !saved && res == QMessageBox::Yes ) {
+        Controller::getInstance ( )->save ( );
+        event->accept ( ); // close application
+        return; 
+    }
+
+    if ( ( saved && res == QMessageBox::Yes ) ||
+         (!saved && res == QMessageBox::No)) {
+        event->accept ( ); // close application
+        return;
+    }
+
+
+    // res == NO 
+    event->ignore ( );
+}
+
+void ViewHolder::setTitleSaved () {
+    QString windowTitle ( " " );
+    windowTitle.append ( FileManager::getInstance ( )->getCurrentFile ( ) );
+    windowTitle.append ( " - Income Manager" );
+    setWindowTitle ( windowTitle );
+}
+
+void ViewHolder::setTitleChanged () {
+    QString windowTitle ( "* " );
+    windowTitle.append ( FileManager::getInstance ( )->getCurrentFile ( ) );
+    windowTitle.append ( " - Income Manager" );
+    setWindowTitle ( windowTitle );
+};
 
